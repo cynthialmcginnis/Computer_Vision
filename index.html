@@ -174,6 +174,52 @@
             padding-bottom: 15px;
         }
 
+        .key-insight {
+            background-color: #f2f6fa;
+            border-left: 4px solid #f2a900;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            font-style: italic;
+        }
+
+        .chapter-mapping {
+            background-color: white;
+            border: 2px solid #003366;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .chapter-mapping table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .chapter-mapping th {
+            background-color: #003366;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .chapter-mapping td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .chapter-mapping tr:nth-child(even) {
+            background-color: #f2f6fa;
+        }
+
+        .chapter-mapping tr:hover {
+            background-color: #fff3cd;
+        }
+
         .resources {
             background-color: white;
             border: 2px solid #003366;
@@ -204,16 +250,6 @@
             border-bottom: none;
         }
 
-        .resources a {
-            color: #003366;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .resources a:hover {
-            color: #f2a900;
-        }
-
         .ai-disclosure {
             background-color: #fff3cd;
             border-left: 4px solid #f2a900;
@@ -237,16 +273,9 @@
             font-size: 14px;
         }
 
-        .key-insight {
-            background-color: #f2f6fa;
-            border-left: 4px solid #f2a900;
-            padding: 20px;
-            margin: 30px 0;
-            border-radius: 4px;
-            font-size: 16px;
-            line-height: 1.8;
-            color: #333;
-            font-style: italic;
+        footer a {
+            color: #f2a900;
+            text-decoration: none;
         }
 
         @media (max-width: 768px) {
@@ -275,69 +304,60 @@
         <header>
             <h1>ARIN 310: Unit 4</h1>
             <div class="subtitle">Computer Vision and the 3 Rs</div>
-            <p class="tagline">Interactive demos, flipbook, and case studies for understanding how machines see</p>
+            <p class="tagline">Interactive demos for understanding how machines see</p>
         </header>
 
         <!-- Hero Section -->
         <div class="hero">
             <h2>36 Million Numbers = 1 Photograph</h2>
-            <p>Explore the mechanisms of computer vision through interactive demonstrations and real-world applications</p>
+            <p>Explore the mechanisms of computer vision through interactive demonstrations</p>
         </div>
 
         <!-- Main Content -->
         <div class="content">
             <!-- Intro -->
             <div class="intro">
-                <strong style="font-size: 17px;">Welcome to Unit 4.</strong> This repository contains all interactive demos for learning how machines see. Each demo answers a specific question about computer vision. Click on any demo below to explore, or download the flipbook for full context.
+                <strong style="font-size: 17px;">Welcome to Unit 4.</strong> Click on any demo below to explore how machines see. Each demo is interactive—try zooming, hovering, uploading your own images to understand computer vision mechanisms.
             </div>
 
             <!-- Demos Section -->
             <h2 class="section-title">🎬 Interactive Demos</h2>
 
             <div class="demos-grid">
-                <!-- Demo 1 -->
+                <!-- Demo 1: Chapter 2 -->
                 <div class="demo-card">
                     <span class="chapter">CHAPTER 2</span>
                     <h3>From Numbers to Picture</h3>
                     <p>Watch a computer reconstruct an image from chaos. See edge detection, color filtering, and feature recognition happen in real time. This is the transformation from data to understanding.</p>
                     <div class="duration">⏱️ 5–7 minutes</div>
-                    <a href="demos/How_Computers_See__Pixels___Grids.html" class="demo-link">Open Demo</a>
+                    <a href="demos/Ch2_From_Numbers_to_Picture.html" class="demo-link">Open Demo</a>
                 </div>
 
-                <!-- Demo 2 -->
-                <div class="demo-card">
-                    <span class="chapter">CHAPTER 4</span>
-                    <h3>Pixels Are Numbers</h3>
-                    <p>See a photograph transformed into a zoomable grid of colored pixels. Hover over any pixel to reveal its RGB values (0–255). Understand that 36.6 million numbers = one image.</p>
-                    <div class="duration">⏱️ 7–10 minutes</div>
-                    <a href="demos/pixel-grid-demo-statue.html" class="demo-link">Open Demo</a>
-                </div>
-
-                <!-- Demo 3 -->
-                <div class="demo-card">
-                    <span class="chapter">CHAPTERS 5–7</span>
-                    <h3>The 3 Rs: Stages of Vision</h3>
-                    <p>Use the slider to step through the four stages of computer vision: numerical grid → edges → features → reconstruction. See how machines extract meaning from raw numbers.</p>
-                    <div class="duration">⏱️ 8–10 minutes</div>
-                    <a href="demos/gemini-cv-stages.html" class="demo-link">Open Demo</a>
-                </div>
-
-                <!-- Demo 4 -->
+                <!-- Demo 2: Chapter 4 -->
                 <div class="demo-card">
                     <span class="chapter">CHAPTER 4</span>
                     <h3>Pixel Grid Illustration</h3>
-                    <p>Four-panel interactive tool: convert photos to pixel grids, explore RGB numbers, detect edges yourself, and adjust grayscale values. Hands-on exploration of pixel mechanics.</p>
+                    <p>Four-panel interactive tool: convert photos to pixel grids, explore RGB numbers, detect edges yourself, and adjust grayscale values. Hands-on exploration of how pixels work.</p>
                     <div class="duration">⏱️ 10–15 minutes</div>
-                    <a href="demos/ARIN310_Pixel_Grid_Illustration.html" class="demo-link">Open Demo</a>
+                    <a href="demos/Ch4_Pixel_Grid_Illustration.html" class="demo-link">Open Demo</a>
                 </div>
 
-                <!-- Demo 5 -->
+                <!-- Demo 3: Chapter 4 - Upload -->
                 <div class="demo-card">
                     <span class="chapter">CHAPTER 4</span>
-                    <h3>How Computers See: Pixels & Grids</h3>
-                    <p>Simplified grid visualization showing how machines interpret images as colored squares. Quick reference for understanding pixels as data.</p>
-                    <div class="duration">⏱️ 3–5 minutes</div>
-                    <a href="demos/How_Computers_See_Pixels_and_Grids.html" class="demo-link">Open Demo</a>
+                    <h3>Upload Your Own Image</h3>
+                    <p>Students upload their own photograph and watch computer vision process it. See edge detection, pixel grids, and feature recognition on images YOU choose. Hands-on learning with real data.</p>
+                    <div class="duration">⏱️ 10–15 minutes</div>
+                    <a href="demos/Ch4_Upload_Your_Own_Image.html" class="demo-link">Open Demo</a>
+                </div>
+
+                <!-- Demo 4: Chapters 5-7 -->
+                <div class="demo-card">
+                    <span class="chapter">CHAPTERS 5–7</span>
+                    <h3>The 3 Rs: Stages of Vision</h3>
+                    <p>Use the slider to step through the four stages of computer vision: numerical grid → edges → features → reconstruction. See how machines extract meaning from raw numbers step by step.</p>
+                    <div class="duration">⏱️ 8–10 minutes</div>
+                    <a href="demos/Ch5-7_3Rs_Stages.html" class="demo-link">Open Demo</a>
                 </div>
             </div>
 
@@ -346,75 +366,69 @@
                 <strong>Key Insight:</strong> When you look at a photograph, you see meaning instantly. When a machine looks at the same photograph, it sees 36.6 million numbers. Teaching a machine to "see" is teaching it to extract meaning from numbers. That's the entire challenge of computer vision.
             </div>
 
-            <!-- Resources Section -->
-            <h2 class="section-title">📚 Resources & Documentation</h2>
-
-            <div class="resources">
-                <h3>Flipbook & Materials</h3>
-                <ul>
-                    <li><strong>Computer Vision Flipbook:</strong> "The Anatomy of Seeing" (13 chapters, 8,000 words) — <a href="flipbook/Computer_Vision_Flipbook_Revised.docx">Download DOCX</a></li>
-                    <li><strong>Case Studies Reference:</strong> 34 documented computer vision failures and biases across 9 categories</li>
-                    <li><strong>Instructor Guide:</strong> <a href="docs/INSTRUCTOR-GUIDE.md">Full timing, scripts, and transitions (90 min class)</a></li>
-                </ul>
-            </div>
-
-            <div class="resources">
-                <h3>Design & Development</h3>
-                <ul>
-                    <li><strong>Design System:</strong> <a href="assets/design-guide.md">Navy, Gold, Light Blue color system + typography standards</a></li>
-                    <li><strong>AI Disclosure Template:</strong> <a href="assets/ai-disclosure-template.md">Copy/paste for your materials</a></li>
-                    <li><strong>GitHub Help:</strong> <a href="docs/README-GITHUB.txt">Upload and sharing instructions</a></li>
-                </ul>
-            </div>
-
             <!-- Chapter Mapping -->
-            <h2 class="section-title">📖 Chapter-to-Demo Mapping</h2>
+            <h2 class="section-title">📖 Chapter-to-Demo Guide</h2>
 
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
-                <thead>
-                    <tr style="background-color: #003366; color: white;">
-                        <th style="padding: 12px; border: 1px solid #003366; text-align: left;">Chapter</th>
-                        <th style="padding: 12px; border: 1px solid #003366; text-align: left;">Topic</th>
-                        <th style="padding: 12px; border: 1px solid #003366; text-align: left;">Demo</th>
-                        <th style="padding: 12px; border: 1px solid #003366; text-align: left;">Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background-color: #f2f6fa;">
-                        <td style="padding: 12px; border: 1px solid #ddd;">2</td>
-                        <td style="padding: 12px; border: 1px solid #ddd;">Your Brain vs. Machine</td>
-                        <td style="padding: 12px; border: 1px solid #ddd;">From Numbers to Picture</td>
-                        <td style="padding: 12px; border: 1px solid #ddd;">5–7 min</td>
-                    </tr>
-                    <tr style="background-color: white;">
-                        <td style="padding: 12px; border: 1px solid #ddd;">4</td>
-                        <td style="padding: 12px; border: 1px solid #ddd;">Pixels Are Numbers</td>
-                        <td style="padding: 12px; border: 1px solid #ddd;">Pixels Are Numbers (Demo)</td>
-                        <td style="padding: 12px; border: 1px solid #ddd;">7–10 min</td>
-                    </tr>
-                    <tr style="background-color: #f2f6fa;">
-                        <td style="padding: 12px; border: 1px solid #ddd;">5–7</td>
-                        <td style="padding: 12px; border: 1px solid #ddd;">The 3 Rs</td>
-                        <td style="padding: 12px; border: 1px solid #ddd;">3 Rs Stages (or lecture)</td>
-                        <td style="padding: 12px; border: 1px solid #ddd;">8–20 min</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="chapter-mapping">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Chapter</th>
+                            <th>Topic</th>
+                            <th>Demo</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2</td>
+                            <td>Your Brain vs. The Machine</td>
+                            <td>From Numbers to Picture</td>
+                            <td>5–7 min</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Pixels Are Numbers</td>
+                            <td>Pixel Grid Illustration + Upload Your Own Image</td>
+                            <td>10–15 min</td>
+                        </tr>
+                        <tr>
+                            <td>5–7</td>
+                            <td>The 3 Rs: Recognition, Reconstruction, Reorganization</td>
+                            <td>The 3 Rs: Stages of Vision</td>
+                            <td>8–10 min</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <!-- How to Use -->
             <div class="resources">
                 <h3>How to Use These Demos</h3>
                 <ul>
                     <li><strong>In the Classroom:</strong> Open demos full-screen on projector. Students follow along in flipbook.</li>
-                    <li><strong>Online:</strong> Share demo links via course site. Students click to open in their own browser.</li>
+                    <li><strong>Online:</strong> Share demo links via course site. Students click to open in their browser.</li>
                     <li><strong>Offline:</strong> Download the repository as ZIP. All demos work without internet (images embedded).</li>
                     <li><strong>Mobile:</strong> All demos work on phones and tablets (responsive design).</li>
                 </ul>
             </div>
 
+            <!-- Repository Structure -->
+            <div class="resources">
+                <h3>Repository Structure</h3>
+                <ul>
+                    <li><strong>demos/</strong> — All interactive demonstrations (HTML files)</li>
+                    <li><strong>demos/images/</strong> — Images used in demos (statue, street scenes)</li>
+                    <li><strong>flipbook/</strong> — "The Anatomy of Seeing" (13-chapter Computer Vision guide)</li>
+                    <li><strong>docs/</strong> — Instructor guide, timing, scripts</li>
+                    <li><strong>assets/</strong> — Design system and AI disclosure templates</li>
+                    <li><strong>README.md</strong> — Full documentation and resources</li>
+                </ul>
+            </div>
+
             <!-- AI Disclosure -->
             <div class="ai-disclosure">
-                <strong>AI Disclosure:</strong> These materials and demos were created with assistance from Claude (Anthropic) and reviewed and finalized by the instructor. All content meets credible source standards for teaching computer vision and AI ethics.
+                <strong>AI Disclosure:</strong> These materials were created with assistance from Claude (Anthropic) and reviewed and finalized by the instructor.
             </div>
         </div>
 
@@ -422,8 +436,8 @@
         <footer>
             <p><strong>ARIN 310 Unit 4: Computer Vision</strong></p>
             <p>Instructor: Cynthia McGinnis | Email: cynthia.mcginnis@umgc.edu</p>
-            <p style="margin-top: 10px; font-size: 12px;">Free for educational use | GitHub: <a href="https://github.com/cynthialmcginnis/ARIN310-Unit4-ComputerVision" style="color: #f2a900; text-decoration: none;">cynthialmcginnis/ARIN310-Unit4-ComputerVision</a></p>
-            <p style="margin-top: 10px; font-size: 12px;">"The machine sees 36 million numbers. You see a statue. Understanding the difference is the beginning of computer vision literacy."</p>
+            <p style="margin-top: 15px; font-size: 12px;">Free for educational use</p>
+            <p style="margin-top: 10px; font-size: 12px; font-style: italic;">"The machine sees 36 million numbers. You see a statue. Understanding the difference is the beginning of computer vision literacy."</p>
         </footer>
     </div>
 </body>
