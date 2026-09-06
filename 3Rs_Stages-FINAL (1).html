@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARIN 310: The 3 Rs - Stages of Vision</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #003366 0%, #004d99 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #f2f6fa;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            max-width: 1000px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        header .subtitle {
+            font-size: 18px;
+            color: #f2a900;
+            font-style: italic;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .description {
+            background-color: white;
+            border-left: 4px solid #f2a900;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .demo-section {
+            background-color: white;
+            border: 3px solid #003366;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .canvas-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            border: 2px solid #f2a900;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            min-height: 420px;
+        }
+
+        canvas {
+            max-width: 100%;
+            max-height: 400px;
+            display: block;
+        }
+
+        .slider-section {
+            margin-bottom: 25px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .slider-label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #003366;
+        }
+
+        .stage-badge {
+            background-color: #f2a900;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #003366, #f2a900);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #f2a900;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 3px solid #003366;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #f2a900;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 3px solid #003366;
+        }
+
+        .stage-info {
+            background-color: #f2f6fa;
+            border: 2px solid #003366;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stage-info h3 {
+            color: #f2a900;
+            font-size: 18px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .stage-info p {
+            color: #333;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .stage-info p:last-child {
+            margin-bottom: 0;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .control-btn {
+            padding: 12px 20px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background-color: #f2a900;
+            color: #003366;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .key-insight {
+            background-color: #fff3cd;
+            border-left: 4px solid #f2a900;
+            padding: 20px;
+            border-radius: 4px;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #333;
+            margin-top: 30px;
+        }
+
+        .key-insight strong {
+            color: #003366;
+        }
+
+        footer {
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 26px;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .canvas-wrapper {
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>The 3 Rs: Stages of Vision</h1>
+            <div class="subtitle">Recognition, Reconstruction, Reorganization</div>
+        </header>
+
+        <div class="content">
+            <div class="description">
+                <strong>How machines see Shibuya Crossing:</strong> Move the slider to step through 4 stages. Watch as this complex street scene transforms from raw pixels into meaningful understanding. This is how computers answer: "What is it?" → "Where is it?" → "How do parts fit together?"
+            </div>
+
+            <div class="demo-section">
+                <div class="canvas-wrapper">
+                    <canvas id="stageCanvas" width="500" height="400"></canvas>
+                </div>
+
+                <div class="slider-section">
+                    <div class="slider-header">
+                        <span class="slider-label">Stage Progress:</span>
+                        <span class="stage-badge" id="stageBadge">Stage 1 / 4</span>
+                    </div>
+                    <input type="range" id="stageSlider" min="1" max="4" value="1" step="1">
+                </div>
+
+                <div class="stage-info">
+                    <h3 id="stageName">Stage 1: Raw Pixels (Numbers Only)</h3>
+                    <p id="stageDescription">A photograph is 36.6 million RGB numbers in a grid. Each number (0-255) represents brightness. The computer sees only data—no meaning yet. This is the starting point: pure information with no understanding.</p>
+                    <p id="stageRs" style="color: #f2a900; font-weight: bold; margin-top: 10px;"></p>
+                </div>
+
+                <div class="controls">
+                    <button class="control-btn" id="prevBtn" onclick="previousStage()">← Previous Stage</button>
+                    <button class="control-btn" id="nextBtn" onclick="nextStage()">Next Stage →</button>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <strong>The 3 Rs Framework:</strong><br><br>
+                <strong style="color: #003366;">Recognition</strong> — "What is it?" Machine identifies objects by edges and shapes (Stage 2)<br><br>
+                <strong style="color: #003366;">Reconstruction</strong> — "Where in 3D space?" Machine maps spatial location and depth (Stage 3)<br><br>
+                <strong style="color: #003366;">Reorganization</strong> — "How do parts fit together?" Machine integrates all visual information into complete understanding (Stage 4)
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>ARIN 310 Unit 4: Computer Vision</strong></p>
+            <p>Instructor: Cynthia McGinnis | cynthia.mcginnis@umgc.edu</p>
+        </footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('stageCanvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const slider = document.getElementById('stageSlider');
+        const stageBadge = document.getElementById('stageBadge');
+        const stageName = document.getElementById('stageName');
+        const stageDescription = document.getElementById('stageDescription');
+        const stageRs = document.getElementById('stageRs');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        let sourceImage = new Image();
+        let imageLoaded = false;
+
+        // Stage information
+        const stages = {
+            1: {
+                name: "Stage 1: Raw Pixels (Numbers Only)",
+                description: "A photograph is 36.6 million RGB numbers in a grid. Each number (0-255) represents brightness. The computer sees only data—no meaning yet. This is the starting point: pure information with no understanding.",
+                rs: ""
+            },
+            2: {
+                name: "Stage 2: Edge Detection (RECOGNITION)",
+                description: "The computer finds sharp transitions between light and dark areas—these are edges. Look at the crossing stripes, people, cars, and buildings. Edges outline shapes and boundaries. This answers: RECOGNITION. 'What is it?' The machine identifies objects by their edges.",
+                rs: "RECOGNITION: Identifying objects by edges and shapes"
+            },
+            3: {
+                name: "Stage 3: Feature Detection (RECONSTRUCTION)",
+                description: "Edges combine into larger patterns: curves, corners, surfaces, textures. The machine maps these features in 3D space. This answers: RECONSTRUCTION. 'Where in 3D space?' The machine understands location, depth, and the spatial relationships between pedestrians, vehicles, and buildings.",
+                rs: "RECONSTRUCTION: Mapping spatial location and 3D depth"
+            },
+            4: {
+                name: "Stage 4: Full Integration (REORGANIZATION)",
+                description: "All visual layers combine: pixels, edges, features, colors, textures, depth. The machine has extracted complete understanding from raw numbers. This answers: REORGANIZATION. 'How do parts fit together?' The machine sees the complete scene: people crossing, vehicles moving, buildings in background.",
+                rs: "REORGANIZATION: Complete visual understanding"
+            }
+        };
+
+        // Load the Shibuya Crossing image
+        sourceImage.onload = () => {
+            imageLoaded = true;
+            render();
+        };
+
+        sourceImage.onerror = () => {
+            console.log('Image not found at IMG_1466.jpg');
+            imageLoaded = true;
+            render();
+        };
+
+        // Load from relative path (IMG_1466.jpg is in same folder)
+        sourceImage.src = 'IMG_1466.jpg';
+
+        slider.addEventListener('input', (e) => {
+            render();
+            updateButtonStates();
+        });
+
+        function updateButtonStates() {
+            const stage = parseInt(slider.value);
+            prevBtn.disabled = stage === 1;
+            nextBtn.disabled = stage === 4;
+        }
+
+        function previousStage() {
+            const stage = parseInt(slider.value);
+            if (stage > 1) {
+                slider.value = stage - 1;
+                render();
+                updateButtonStates();
+            }
+        }
+
+        function nextStage() {
+            const stage = parseInt(slider.value);
+            if (stage < 4) {
+                slider.value = stage + 1;
+                render();
+                updateButtonStates();
+            }
+        }
+
+        function render() {
+            if (!imageLoaded) return;
+
+            const stage = parseInt(slider.value);
+
+            stageBadge.textContent = `Stage ${stage} / 4`;
+            stageName.textContent = stages[stage].name;
+            stageDescription.textContent = stages[stage].description;
+            stageRs.textContent = stages[stage].rs;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Get image data
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
+
+            const imageData = tempCtx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            const output = ctx.createImageData(canvas.width, canvas.height);
+
+            // Convert to grayscale
+            const gray = new Uint8ClampedArray(canvas.width * canvas.height);
+            for (let i = 0; i < data.length; i += 4) {
+                gray[i / 4] = Math.round(0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]);
+            }
+
+            if (stage === 1) {
+                // Stage 1: Pixelated version (raw data representation)
+                const blockSize = 8;
+                for (let y = 0; y < canvas.height; y += blockSize) {
+                    for (let x = 0; x < canvas.width; x += blockSize) {
+                        const val = gray[y * canvas.width + x];
+                        for (let dy = 0; dy < blockSize && y + dy < canvas.height; dy++) {
+                            for (let dx = 0; dx < blockSize && x + dx < canvas.width; dx++) {
+                                const idx = ((y + dy) * canvas.width + (x + dx)) * 4;
+                                output.data[idx] = val;
+                                output.data[idx + 1] = val;
+                                output.data[idx + 2] = val;
+                                output.data[idx + 3] = 255;
+                            }
+                        }
+                    }
+                }
+                ctx.putImageData(output, 0, 0);
+            } else if (stage === 2 || stage === 3 || stage === 4) {
+                // Compute Sobel edges
+                const edges = new Uint8ClampedArray(canvas.width * canvas.height);
+                const w = canvas.width;
+                const h = canvas.height;
+
+                for (let y = 1; y < h - 1; y++) {
+                    for (let x = 1; x < w - 1; x++) {
+                        const gx =
+                            -gray[(y - 1) * w + (x - 1)] - 2 * gray[y * w + (x - 1)] - gray[(y + 1) * w + (x - 1)] +
+                            gray[(y - 1) * w + (x + 1)] + 2 * gray[y * w + (x + 1)] + gray[(y + 1) * w + (x + 1)];
+
+                        const gy =
+                            -gray[(y - 1) * w + (x - 1)] - 2 * gray[(y - 1) * w + x] - gray[(y - 1) * w + (x + 1)] +
+                            gray[(y + 1) * w + (x - 1)] + 2 * gray[(y + 1) * w + x] + gray[(y + 1) * w + (x + 1)];
+
+                        edges[y * w + x] = Math.min(255, Math.sqrt(gx * gx + gy * gy));
+                    }
+                }
+
+                if (stage === 2) {
+                    // Stage 2: Edge detection only
+                    for (let i = 0; i < edges.length; i++) {
+                        const idx = i * 4;
+                        const edgeVal = edges[i] > 40 ? 255 : 0;
+                        output.data[idx] = edgeVal;
+                        output.data[idx + 1] = edgeVal * 0.7;
+                        output.data[idx + 2] = 0;
+                        output.data[idx + 3] = 255;
+                    }
+                    ctx.putImageData(output, 0, 0);
+                } else if (stage === 3) {
+                    // Stage 3: Blend edges with grayscale
+                    for (let i = 0; i < edges.length; i++) {
+                        const idx = i * 4;
+                        const blend = edges[i] > 40 ? 0.7 : 0.3;
+                        output.data[idx] = blend * 255 + (1 - blend) * gray[i];
+                        output.data[idx + 1] = blend * 150 + (1 - blend) * gray[i];
+                        output.data[idx + 2] = (1 - blend) * gray[i];
+                        output.data[idx + 3] = 255;
+                    }
+                    ctx.putImageData(output, 0, 0);
+                } else if (stage === 4) {
+                    // Stage 4: Full color reconstruction
+                    ctx.putImageData(imageData, 0, 0);
+                }
+            }
+
+            updateButtonStates();
+        }
+
+        // Initialize
+        updateButtonStates();
+    </script>
+</body>
+</html>
