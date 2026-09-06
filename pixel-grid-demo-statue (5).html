@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixels Are Numbers: The Statue</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #003366;
+            color: #1a1a1a;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background-color: #f2f6fa;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #003366;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 42px;
+            font-weight: bold;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 20px;
+            font-style: italic;
+        }
+        
+        .intro {
+            background-color: #fff;
+            border-left: 4px solid #f2a900;
+            padding: 20px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 1200px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .panel {
+            background-color: #fff;
+            border: 3px solid #003366;
+            border-radius: 4px;
+            padding: 20px;
+        }
+        
+        .panel h2 {
+            color: #003366;
+            font-size: 24px;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #f2a900;
+            padding-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .photo-display {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        #photoImage {
+            max-width: 100%;
+            height: auto;
+            border: 3px solid #003366;
+            border-radius: 4px;
+            display: block;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .zoom-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .zoom-control label {
+            font-weight: bold;
+            color: #003366;
+            font-size: 18px;
+        }
+        
+        input[type="range"] {
+            width: 200px;
+            height: 8px;
+            cursor: pointer;
+        }
+        
+        .zoom-level {
+            font-weight: bold;
+            color: #f2a900;
+            min-width: 60px;
+            font-size: 18px;
+        }
+        
+        .grid-display {
+            position: relative;
+            margin: 20px 0;
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 500px;
+            border: 3px solid #003366;
+            background-color: #f0f0f0;
+        }
+        
+        .pixel-grid {
+            display: inline-grid;
+            gap: 2px;
+            padding: 10px;
+            background-color: #fff;
+        }
+        
+        .pixel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #999;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 8px;
+            font-weight: bold;
+            color: #999;
+        }
+        
+        .pixel:hover {
+            border: 3px solid #f2a900;
+            transform: scale(1.3);
+            z-index: 10;
+            box-shadow: 0 0 8px rgba(242, 169, 0, 0.5);
+        }
+        
+        .pixel-info {
+            background-color: #fff3cd;
+            border-left: 4px solid #f2a900;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 16px;
+            line-height: 1.8;
+            min-height: 80px;
+        }
+        
+        .explanation {
+            background-color: #f2f6fa;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            margin-top: 15px;
+        }
+        
+        .key-insight {
+            background-color: #fff3cd;
+            border-left: 4px solid #f2a900;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        
+        .key-insight strong {
+            color: #003366;
+            font-size: 17px;
+        }
+        
+        .stats {
+            background-color: #f2f6fa;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .stat-row {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .stat-label {
+            font-weight: bold;
+            color: #003366;
+        }
+        
+        .stat-value {
+            color: #f2a900;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pixels Are Numbers</h1>
+        <div class="subtitle">From Photograph to Data</div>
+        
+        <div class="intro">
+            <strong style="font-size: 18px;">What you're seeing:</strong> <span style="font-size: 16px;">On the left, a photograph of a statue. On the right, the exact same image as a grid of colored pixels. Each colored square is ONE pixel. Each pixel has three numbers: red, green, and blue (RGB values from 0 to 255). Hover over pixels to see their RGB values. Zoom in and out to understand how a photograph becomes pure numbers.</span>
+        </div>
+        
+        <div class="comparison">
+            <div class="panel">
+                <h2>What You See: The Photograph</h2>
+                <div class="photo-display">
+                    <img id="photoImage" src="IMG_2735.png" alt="Statue with beanie">
+                </div>
+                <div class="explanation">
+                    This is a photograph. You see it as a unified image: a statue, a beanie, moss on a tree, a whole scene with meaning and context.
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h2>What the Machine Sees: The Pixel Grid</h2>
+                <div class="controls">
+                    <div class="zoom-control">
+                        <label>Zoom Level:</label>
+                        <input type="range" id="zoomSlider" min="1" max="10" value="4" step="1">
+                        <span class="zoom-level" id="zoomValue">4x</span>
+                    </div>
+                    <button onclick="resetZoom()" style="background-color: #003366; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold;">Reset</button>
+                </div>
+                
+                <div class="grid-display">
+                    <div class="pixel-grid" id="pixelGrid"></div>
+                </div>
+                
+                <div class="pixel-info">
+                    <strong style="font-size: 18px;">Hover over a pixel:</strong> <span style="font-size: 16px;">The three numbers you see are Red, Green, and Blue values (0–255). Together, they define the color of that single pixel. Every pixel in the image has three such numbers.</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel">
+            <h2>The Math</h2>
+            <div class="stats">
+                <div class="stat-row">
+                    <span class="stat-label">Image Size:</span>
+                    <span class="stat-value">3024 × 4032 pixels</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Total Pixels:</span>
+                    <span class="stat-value">12,192,768</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Colors per Pixel (RGB):</span>
+                    <span class="stat-value">3 numbers each</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Total Numbers in This Image:</span>
+                    <span class="stat-value">36,578,304</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel">
+            <h2>What This Means</h2>
+            <div class="explanation">
+                When you show a machine a photograph, it does not "see" the photograph. It sees a massive array of numbers. For this statue image, that is 36,578,304 numbers. Each number is between 0 and 255.<br><br>
+                
+                The machine's task is to find the pattern in those numbers. Is this a face? Is that moss? Is that stone? The pattern that makes a statue a statue is encoded somewhere in the arrangement of 36,578,304 numbers. The machine must learn to recognize that pattern.<br><br>
+                
+                This is the fundamental challenge of computer vision. How do you extract meaning from such vast numerical arrays?
+            </div>
+            
+            <div class="key-insight">
+                <strong>Key Insight:</strong> When you look at a photograph, you see a unified image with meaning. When a machine looks at the same photograph, it sees 36,578,304 numbers. The difference between human vision and machine vision is the difference between image and number. Teaching a machine to "see" is teaching it to extract meaning from numbers.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Canvas setup
+        let cleanImg = null;
+        let imgWidth = 3024;
+        let imgHeight = 4032;
+        let frames = 4032;  // Use height for display
+        let displayWidth = 256;  // For display grid
+        let displayHeight = 256;
+        
+        function initializeImage() {
+            const img = new Image();
+            img.onload = function() {
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = displayWidth;
+                tempCanvas.height = displayHeight;
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCtx.drawImage(img, 0, 0, displayWidth, displayHeight);
+                
+                const imgData = tempCtx.getImageData(0, 0, displayWidth, displayHeight);
+                const data = imgData.data;
+                
+                // Store pixel data
+                cleanImg = new Uint8ClampedArray(displayWidth * displayHeight * 4);
+                for (let i = 0; i < data.length; i++) {
+                    cleanImg[i] = data[i];
+                }
+                
+                generatePixelGrid();
+            };
+            img.src = 'IMG_2735.png';
+        }
+        
+        function generatePixelGrid() {
+            if (!cleanImg) return;
+            
+            const gridContainer = document.getElementById('pixelGrid');
+            const zoom = parseInt(document.getElementById('zoomSlider').value);
+            const pixelSize = 10 * zoom;
+            const cols = Math.floor(displayWidth / zoom);
+            
+            gridContainer.innerHTML = '';
+            gridContainer.style.gridTemplateColumns = `repeat(${cols}, ${pixelSize}px)`;
+            
+            for (let i = 0; i < cleanImg.length; i += 4) {
+                const pixelIndex = i / 4;
+                const r = cleanImg[i];
+                const g = cleanImg[i + 1];
+                const b = cleanImg[i + 2];
+                
+                const pixelDiv = document.createElement('div');
+                pixelDiv.className = 'pixel';
+                pixelDiv.style.backgroundColor = `rgb(${r},${g},${b})`;
+                pixelDiv.style.width = pixelSize + 'px';
+                pixelDiv.style.height = pixelSize + 'px';
+                pixelDiv.style.fontSize = Math.max(8, pixelSize / 4) + 'px';
+                
+                pixelDiv.dataset.r = r;
+                pixelDiv.dataset.g = g;
+                pixelDiv.dataset.b = b;
+                
+                pixelDiv.addEventListener('mouseenter', function() {
+                    showPixelInfo(r, g, b, pixelIndex);
+                });
+                
+                gridContainer.appendChild(pixelDiv);
+            }
+        }
+        
+        function showPixelInfo(r, g, b, index) {
+            const info = document.querySelector('.pixel-info');
+            info.innerHTML = `<strong style="font-size: 18px;">Pixel ${index}:</strong> <span style="font-size: 16px;">R=${r}, G=${g}, B=${b}<br><br>
+            This single pixel's color is defined by three numbers. Multiply this by every pixel in the image (${displayWidth * displayHeight} pixels total = ${displayWidth * displayHeight * 3} numbers).</span>`;
+        }
+        
+        function resetZoom() {
+            document.getElementById('zoomSlider').value = 4;
+            updateZoom();
+        }
+        
+        function updateZoom() {
+            const zoom = parseInt(document.getElementById('zoomSlider').value);
+            document.getElementById('zoomValue').textContent = zoom + 'x';
+            generatePixelGrid();
+        }
+        
+        // Initialize
+        initializeImage();
+        
+        document.getElementById('zoomSlider').addEventListener('input', updateZoom);
+    </script>
+</body>
+</html>
