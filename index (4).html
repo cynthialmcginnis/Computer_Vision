@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARIN 310 Unit 4: Computer Vision</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #003366 0%, #004d99 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #f2f6fa;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        header .subtitle {
+            font-size: 22px;
+            color: #f2a900;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        header .tagline {
+            font-size: 16px;
+            color: #e8e8e8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            background-color: #f2a900;
+            padding: 30px;
+            text-align: center;
+            color: #003366;
+        }
+
+        .hero h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .hero p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .intro {
+            background-color: white;
+            border-left: 4px solid #f2a900;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .demos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .demo-card {
+            background-color: white;
+            border: 3px solid #003366;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            border-color: #f2a900;
+        }
+
+        .demo-card .chapter {
+            display: inline-block;
+            background-color: #f2a900;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            width: fit-content;
+        }
+
+        .demo-card h3 {
+            color: #003366;
+            font-size: 22px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .demo-card p {
+            color: #555;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .demo-card .duration {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .demo-link {
+            display: inline-block;
+            background-color: #003366;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .demo-link:hover {
+            background-color: #f2a900;
+            color: #003366;
+            transform: translateX(5px);
+        }
+
+        .section-title {
+            color: #003366;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #f2a900;
+            padding-bottom: 15px;
+        }
+
+        .resources {
+            background-color: white;
+            border: 2px solid #003366;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .resources h3 {
+            color: #003366;
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .resources ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .resources li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 16px;
+        }
+
+        .resources li:last-child {
+            border-bottom: none;
+        }
+
+        .resources a {
+            color: #003366;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .resources a:hover {
+            color: #f2a900;
+        }
+
+        .ai-disclosure {
+            background-color: #fff3cd;
+            border-left: 4px solid #f2a900;
+            padding: 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #333;
+            margin-top: 30px;
+        }
+
+        .ai-disclosure strong {
+            color: #003366;
+        }
+
+        footer {
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        .key-insight {
+            background-color: #f2f6fa;
+            border-left: 4px solid #f2a900;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 32px;
+            }
+
+            .demos-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .hero h2 {
+                font-size: 22px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>ARIN 310: Unit 4</h1>
+            <div class="subtitle">Computer Vision and the 3 Rs</div>
+            <p class="tagline">Interactive demos, flipbook, and case studies for understanding how machines see</p>
+        </header>
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <h2>36 Million Numbers = 1 Photograph</h2>
+            <p>Explore the mechanisms of computer vision through interactive demonstrations and real-world applications</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Intro -->
+            <div class="intro">
+                <strong style="font-size: 17px;">Welcome to Unit 4.</strong> This repository contains all interactive demos for learning how machines see. Each demo answers a specific question about computer vision. Click on any demo below to explore, or download the flipbook for full context.
+            </div>
+
+            <!-- Demos Section -->
+            <h2 class="section-title">🎬 Interactive Demos</h2>
+
+            <div class="demos-grid">
+                <!-- Demo 1 -->
+                <div class="demo-card">
+                    <span class="chapter">CHAPTER 2</span>
+                    <h3>From Numbers to Picture</h3>
+                    <p>Watch a computer reconstruct an image from chaos. See edge detection, color filtering, and feature recognition happen in real time. This is the transformation from data to understanding.</p>
+                    <div class="duration">⏱️ 5–7 minutes</div>
+                    <a href="demos/How_Computers_See__Pixels___Grids.html" class="demo-link">Open Demo</a>
+                </div>
+
+                <!-- Demo 2 -->
+                <div class="demo-card">
+                    <span class="chapter">CHAPTER 4</span>
+                    <h3>Pixels Are Numbers</h3>
+                    <p>See a photograph transformed into a zoomable grid of colored pixels. Hover over any pixel to reveal its RGB values (0–255). Understand that 36.6 million numbers = one image.</p>
+                    <div class="duration">⏱️ 7–10 minutes</div>
+                    <a href="demos/pixel-grid-demo-statue.html" class="demo-link">Open Demo</a>
+                </div>
+
+                <!-- Demo 3 -->
+                <div class="demo-card">
+                    <span class="chapter">CHAPTERS 5–7</span>
+                    <h3>The 3 Rs: Stages of Vision</h3>
+                    <p>Use the slider to step through the four stages of computer vision: numerical grid → edges → features → reconstruction. See how machines extract meaning from raw numbers.</p>
+                    <div class="duration">⏱️ 8–10 minutes</div>
+                    <a href="demos/gemini-cv-stages.html" class="demo-link">Open Demo</a>
+                </div>
+
+                <!-- Demo 4 -->
+                <div class="demo-card">
+                    <span class="chapter">CHAPTER 4</span>
+                    <h3>Pixel Grid Illustration</h3>
+                    <p>Four-panel interactive tool: convert photos to pixel grids, explore RGB numbers, detect edges yourself, and adjust grayscale values. Hands-on exploration of pixel mechanics.</p>
+                    <div class="duration">⏱️ 10–15 minutes</div>
+                    <a href="demos/ARIN310_Pixel_Grid_Illustration.html" class="demo-link">Open Demo</a>
+                </div>
+
+                <!-- Demo 5 -->
+                <div class="demo-card">
+                    <span class="chapter">CHAPTER 4</span>
+                    <h3>How Computers See: Pixels & Grids</h3>
+                    <p>Simplified grid visualization showing how machines interpret images as colored squares. Quick reference for understanding pixels as data.</p>
+                    <div class="duration">⏱️ 3–5 minutes</div>
+                    <a href="demos/How_Computers_See_Pixels_and_Grids.html" class="demo-link">Open Demo</a>
+                </div>
+            </div>
+
+            <!-- Key Insight -->
+            <div class="key-insight">
+                <strong>Key Insight:</strong> When you look at a photograph, you see meaning instantly. When a machine looks at the same photograph, it sees 36.6 million numbers. Teaching a machine to "see" is teaching it to extract meaning from numbers. That's the entire challenge of computer vision.
+            </div>
+
+            <!-- Resources Section -->
+            <h2 class="section-title">📚 Resources & Documentation</h2>
+
+            <div class="resources">
+                <h3>Flipbook & Materials</h3>
+                <ul>
+                    <li><strong>Computer Vision Flipbook:</strong> "The Anatomy of Seeing" (13 chapters, 8,000 words) — <a href="flipbook/Computer_Vision_Flipbook_Revised.docx">Download DOCX</a></li>
+                    <li><strong>Case Studies Reference:</strong> 34 documented computer vision failures and biases across 9 categories</li>
+                    <li><strong>Instructor Guide:</strong> <a href="docs/INSTRUCTOR-GUIDE.md">Full timing, scripts, and transitions (90 min class)</a></li>
+                </ul>
+            </div>
+
+            <div class="resources">
+                <h3>Design & Development</h3>
+                <ul>
+                    <li><strong>Design System:</strong> <a href="assets/design-guide.md">Navy, Gold, Light Blue color system + typography standards</a></li>
+                    <li><strong>AI Disclosure Template:</strong> <a href="assets/ai-disclosure-template.md">Copy/paste for your materials</a></li>
+                    <li><strong>GitHub Help:</strong> <a href="docs/README-GITHUB.txt">Upload and sharing instructions</a></li>
+                </ul>
+            </div>
+
+            <!-- Chapter Mapping -->
+            <h2 class="section-title">📖 Chapter-to-Demo Mapping</h2>
+
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                <thead>
+                    <tr style="background-color: #003366; color: white;">
+                        <th style="padding: 12px; border: 1px solid #003366; text-align: left;">Chapter</th>
+                        <th style="padding: 12px; border: 1px solid #003366; text-align: left;">Topic</th>
+                        <th style="padding: 12px; border: 1px solid #003366; text-align: left;">Demo</th>
+                        <th style="padding: 12px; border: 1px solid #003366; text-align: left;">Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color: #f2f6fa;">
+                        <td style="padding: 12px; border: 1px solid #ddd;">2</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">Your Brain vs. Machine</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">From Numbers to Picture</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">5–7 min</td>
+                    </tr>
+                    <tr style="background-color: white;">
+                        <td style="padding: 12px; border: 1px solid #ddd;">4</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">Pixels Are Numbers</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">Pixels Are Numbers (Demo)</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">7–10 min</td>
+                    </tr>
+                    <tr style="background-color: #f2f6fa;">
+                        <td style="padding: 12px; border: 1px solid #ddd;">5–7</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">The 3 Rs</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">3 Rs Stages (or lecture)</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">8–20 min</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- How to Use -->
+            <div class="resources">
+                <h3>How to Use These Demos</h3>
+                <ul>
+                    <li><strong>In the Classroom:</strong> Open demos full-screen on projector. Students follow along in flipbook.</li>
+                    <li><strong>Online:</strong> Share demo links via course site. Students click to open in their own browser.</li>
+                    <li><strong>Offline:</strong> Download the repository as ZIP. All demos work without internet (images embedded).</li>
+                    <li><strong>Mobile:</strong> All demos work on phones and tablets (responsive design).</li>
+                </ul>
+            </div>
+
+            <!-- AI Disclosure -->
+            <div class="ai-disclosure">
+                <strong>AI Disclosure:</strong> These materials and demos were created with assistance from Claude (Anthropic) and reviewed and finalized by the instructor. All content meets credible source standards for teaching computer vision and AI ethics.
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p><strong>ARIN 310 Unit 4: Computer Vision</strong></p>
+            <p>Instructor: Cynthia McGinnis | Email: cynthia.mcginnis@umgc.edu</p>
+            <p style="margin-top: 10px; font-size: 12px;">Free for educational use | GitHub: <a href="https://github.com/cynthialmcginnis/ARIN310-Unit4-ComputerVision" style="color: #f2a900; text-decoration: none;">cynthialmcginnis/ARIN310-Unit4-ComputerVision</a></p>
+            <p style="margin-top: 10px; font-size: 12px;">"The machine sees 36 million numbers. You see a statue. Understanding the difference is the beginning of computer vision literacy."</p>
+        </footer>
+    </div>
+</body>
+</html>
