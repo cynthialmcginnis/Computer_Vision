@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ARIN 310 - How Computer Vision Sees</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #0b192c;
+      color: #f2f6fa;
+      margin: 0;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      margin-bottom: 6px;
+      color: #f2a900;
+      font-size: 1.6rem;
+    }
+    .subtitle {
+      color: #9cb3c9;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+    .container {
+      background: #1e3e62;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 650px;
+      width: 100%;
+    }
+    .viewport-box {
+      border: 2px solid #f2a900;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000;
+      margin-bottom: 16px;
+      line-height: 0;
+    }
+    canvas {
+      display: block;
+    }
+    .controls {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .file-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #002244;
+      padding: 10px 14px;
+      border-radius: 8px;
+    }
+    .slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .slider-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    input[type="range"] {
+      width: 100%;
+      cursor: pointer;
+    }
+    .stage-card {
+      background: #002244;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border-left: 4px solid #f2a900;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+    .stage-title {
+      font-weight: bold;
+      color: #f2a900;
+      margin-bottom: 4px;
+    }
+    .stage-desc {
+      color: #d1dbe6;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>ARIN 310: How Computer Vision "Sees"</h1>
+  <div class="subtitle">Demystifying pixel grids, gradients, contours, and full image reconstruction.</div>
+
+  <div class="container">
+    <div class="viewport-box">
+      <canvas id="cvCanvas" width="480" height="480"></canvas>
+    </div>
+
+    <div class="controls">
+      <div class="file-row">
+        <span><strong>Upload Any Image:</strong></span>
+        <input type="file" id="imageUploader" accept="image/*" />
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label-row">
+          <span>Vision Analysis Stage:</span>
+          <span id="stageLabel">Stage 1 / 4</span>
+        </div>
+        <input type="range" id="stageSlider" min="0" max="300" value="0" />
+      </div>
+
+      <div class="stage-card">
+        <div id="stageTitle" class="stage-title">Stage 1: Pixels as Numerical Arrays</div>
+        <div id="stageDesc" class="stage-desc">
+          To a computer, an image is not visual art—it is a rectangular 2D matrix of numbers representing color intensities (RGB).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("cvCanvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const uploader = document.getElementById("imageUploader");
+    const slider = document.getElementById("stageSlider");
+    const stageLabel = document.getElementById("stageLabel");
+    const stageTitle = document.getElementById("stageTitle");
+    const stageDesc = document.getElementById("stageDesc");
+
+    let sourceImg = new Image();
+    let imgLoaded = false;
+    let baseWidth = 480;
+    let baseHeight = 480;
+
+    // Load a default demo image if none uploaded
+    sourceImg.onload = () => {
+      imgLoaded = true;
+      render();
+    };
+    sourceImg.src = "IMG_2735.jpg";
+
+    uploader.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        sourceImg = new Image();
+        sourceImg.onload = () => {
+          imgLoaded = true;
+          slider.value = 0;
+          render();
+        };
+        sourceImg.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    slider.addEventListener("input", render);
+
+    function render() {
+      if (!imgLoaded) return;
+
+      const progress = parseInt(slider.value, 10); // Range: 0 to 300
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Temporary canvas for preprocessing and analysis
+      const offCanvas = document.createElement("canvas");
+      offCanvas.width = canvas.width;
+      offCanvas.height = canvas.height;
+      const offCtx = offCanvas.getContext("2d", { willReadFrequently: true });
+      offCtx.drawImage(sourceImg, 0, 0, canvas.width, canvas.height);
+
+      const srcData = offCtx.getImageData(0, 0, canvas.width, canvas.height);
+      const outData = ctx.createImageData(canvas.width, canvas.height);
+
+      // Compute Sobel Gradients for edge extraction
+      const gray = new Float32Array(canvas.width * canvas.height);
+      for (let i = 0; i < srcData.data.length; i += 4) {
+        gray[i / 4] = 0.299 * srcData.data[i] + 0.587 * srcData.data[i + 1] + 0.114 * srcData.data[i + 2];
+      }
+
+      const edges = new Float32Array(canvas.width * canvas.height);
+      const w = canvas.width;
+      const h = canvas.height;
+
+      for (let y = 1; y < h - 1; y++) {
+        for (let x = 1; x < w - 1; x++) {
+          const gx =
+            -gray[(y - 1) * w + (x - 1)] + gray[(y - 1) * w + (x + 1)] +
+            -2 * gray[y * w + (x - 1)]   + 2 * gray[y * w + (x + 1)] +
+            -gray[(y + 1) * w + (x - 1)] + gray[(y + 1) * w + (x + 1)];
+
+          const gy =
+            -gray[(y - 1) * w + (x - 1)] - 2 * gray[(y - 1) * w + x] - gray[(y - 1) * w + (x + 1)] +
+             gray[(y + 1) * w + (x - 1)] + 2 * gray[(y + 1) * w + x] +  gray[(y + 1) * w + (x + 1)];
+
+          edges[y * w + x] = Math.min(255, Math.sqrt(gx * gx + gy * gy));
+        }
+      }
+
+      if (progress <= 100) {
+        // STAGE 1 -> STAGE 2: Numerical Grid Mosaic into Sobel Edges
+        const t = progress / 100;
+        stageLabel.innerText = "Stage 1 → Stage 2";
+        stageTitle.innerText = "1. Pixel Numerical Grids & Low-Level Gradients";
+        stageDesc.innerText = "Demonstrating spatial sampling: the image is broken into an oversized discrete pixel matrix, which the computer filters to detect sharp intensity gradients (edges).";
+
+        const blockSize = Math.max(1, Math.floor(28 * (1 - t) + 2 * t));
+        for (let y = 0; y < h; y += blockSize) {
+          for (let x = 0; x < w; x += blockSize) {
+            const idx = (y * w + x);
+            const edgeVal = edges[idx];
+            const g = gray[idx];
+
+            const val = (1 - t) * g + t * edgeVal;
+
+            for (let dy = 0; dy < blockSize && (y + dy) < h; dy++) {
+              for (let dx = 0; dx < blockSize && (x + dx) < w; dx++) {
+                const p = ((y + dy) * w + (x + dx)) * 4;
+                outData.data[p] = val;
+                outData.data[p + 1] = t > 0.4 ? val * 0.9 : val;
+                outData.data[p + 2] = t > 0.4 ? val * 0.3 : val;
+                outData.data[p + 3] = 255;
+              }
+            }
+          }
+        }
+        ctx.putImageData(outData, 0, 0);
+
+      } else if (progress <= 200) {
+        // STAGE 2 -> STAGE 3: Edges into Feature Contours & Bounding Boxes
+        const t = (progress - 100) / 100;
+        stageLabel.innerText = "Stage 2 → Stage 3";
+        stageTitle.innerText = "2. Feature Detection & Boundary Contours";
+        stageDesc.innerText = "Adjacent edge responses join to form object boundaries. High-level vision locates shapes, features, and spatial regions of interest.";
+
+        for (let i = 0; i < edges.length; i++) {
+          const p = i * 4;
+          const e = edges[i] > (45 - 20 * t) ? 255 : 0;
+          const g = gray[i];
+
+          outData.data[p] = (1 - t) * (e * 0.9) + t * (g * 0.4);
+          outData.data[p + 1] = (1 - t) * (e * 0.8) + t * (g * 0.6);
+          outData.data[p + 2] = (1 - t) * (e * 0.2) + t * (g * 0.8);
+          outData.data[p + 3] = 255;
+        }
+        ctx.putImageData(outData, 0, 0);
+
+        // Draw dynamic detection bounding boxes overlay
+        ctx.strokeStyle = `rgba(242, 169, 0, ${Math.min(1, t * 1.5)})`;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(w * 0.2, h * 0.12, w * 0.6, h * 0.75); // Primary Subject Bounding Box
+
+        ctx.strokeStyle = `rgba(0, 210, 255, ${Math.min(1, t * 1.5)})`;
+        ctx.strokeRect(w * 0.28, h * 0.14, w * 0.44, h * 0.26); // Head / Hat feature box
+
+      } else {
+        // STAGE 3 -> STAGE 4: Boundary Outlines into Full Photorealistic Image
+        const t = (progress - 200) / 100;
+        stageLabel.innerText = "Stage 3 → Stage 4";
+        stageTitle.innerText = "3. Full Semantic Image Reconstruction";
+        stageDesc.innerText = "All visual layers coalesce: pixel channels, geometric edges, and surface textures form the completed photographic image.";
+
+        for (let i = 0; i < srcData.data.length; i += 4) {
+          const edgeHint = edges[i / 4] > 40 ? 255 : 0;
+          outData.data[i]     = (1 - t) * edgeHint + t * srcData.data[i];
+          outData.data[i + 1] = (1 - t) * edgeHint + t * srcData.data[i + 1];
+          outData.data[i + 2] = (1 - t) * edgeHint + t * srcData.data[i + 2];
+          outData.data[i + 3] = 255;
+        }
+        ctx.putImageData(outData, 0, 0);
+      }
+    }
+  </script>
+</body>
+</html>
